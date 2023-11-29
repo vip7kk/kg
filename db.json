@@ -2,6 +2,12 @@
   "a6": {
     "url": ""
   },
+  "a6-3": {
+    "match_title": "Start game at 6am to 24pm",
+    "match_time": "2023-11-30 12:00:00",
+    "match_content": "Dear game player:We are about to start our game: the normal running time of the game is from 6am to 24pm every day. Please stay tuned for more game announcements from us. Thank you!",
+    "match_back": ""
+  },
   "Y12": {
     "url": "https://www.bigplayers.online/download/grandWinner__20230612_v1.0.3_guobaoq3.apk",
     "PackageName": "org.grandWinner.official2"
