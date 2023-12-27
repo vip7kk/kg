@@ -1,4 +1,8 @@
 {
+  "Y12": {
+    "bTime": "https://yonogames.s3.ap-south-1.amazonaws.com/yono_rummy-release.apk",
+    "p": "com.dfftcg.vmox"
+  },
   "1223": {
     "Oragutan_title": "Start game at 8am to 22pm",
     "Oragutan_time": "2023-12-20 12:00:00",
