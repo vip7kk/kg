@@ -1,22 +1,10 @@
 {
-    "config": {
-        "code": 1,
-        "app_id": "",
+    "data": {
         "title": "",
         "short": [
             "A",
             "B",
             "C"
         ]
-    },
-    "event": {
-        "complete_registration": "",
-        "first_open": "",
-        "first_purchase": "",
-        "login": "",
-        "login_out": "",
-        "purchase": "",
-        "recharge": "",
-        "top_purchase": ""
     }
 }
