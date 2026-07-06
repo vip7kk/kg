@@ -1,0 +1,22 @@
+{
+    "config": {
+        "code": 1,
+        "app_id": "",
+        "title": "",
+        "short": [
+            "A",
+            "B",
+            "C"
+        ]
+    },
+    "event": {
+        "enterGame": "",
+        "firstrecharge": "",
+        "login": "",
+        "logout": "",
+        "recharge": "",
+        "rechargeClick": "",
+        "register": "",
+        "registerClick": ""
+    }
+}
