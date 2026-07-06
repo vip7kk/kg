@@ -10,13 +10,13 @@
         ]
     },
     "event": {
-        "enterGame": "",
-        "firstrecharge": "",
+        "complete_registration": "",
+        "first_open": "",
+        "first_purchase": "",
         "login": "",
-        "logout": "",
+        "login_out": "",
+        "purchase": "",
         "recharge": "",
-        "rechargeClick": "",
-        "register": "",
-        "registerClick": ""
+        "top_purchase": ""
     }
 }
