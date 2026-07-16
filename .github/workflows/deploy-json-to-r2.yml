@@ -1,0 +1,23 @@
+name: Upload JSON to Cloudflare R2
+
+on:
+  push:
+    branches: [ main ]
+    paths: 
+      - '*.json'           # 只有根目錄的 JSON 檔案變更時才執行
+  workflow_dispatch:       # 允許手動觸發
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Upload JSON files to R2
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_R2_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: r2 object put ${{ secrets.R2_BUCKET }}/ --recursive --dir . --include "*.json"
