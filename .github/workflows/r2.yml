@@ -1,4 +1,4 @@
-name: Sync JSON to Cloudflare R2
+name: Sync Config to Cloudflare R2
 
 on:
   push:
@@ -9,8 +9,11 @@ jobs:
   sync:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Install rclone
@@ -25,34 +28,30 @@ jobs:
           [r2]
           type = s3
           provider = Cloudflare
-
           access_key_id = ${{ secrets.R2_ACCESS_KEY_ID }}
           secret_access_key = ${{ secrets.R2_SECRET_ACCESS_KEY }}
-
           endpoint = ${{ secrets.R2_ENDPOINT }}
-
-          no_check_bucket = true
           acl = private
+          no_check_bucket = true
           EOF
 
-      - name: Sync JSON
+      - name: Check config folder
         run: |
-          rclone sync . r2:${{ secrets.R2_BUCKET }} \
-            --include "*.json" \
-            --exclude ".git/**" \
-            --exclude ".github/**" \
-            --exclude "*.md" \
-            --exclude "*.png" \
-            --exclude "*.jpg" \
-            --exclude "*.jpeg" \
-            --exclude "*.gif" \
+          echo "Config files:"
+          find config -type f
+
+      - name: Sync config folder
+        run: |
+          rclone sync config r2:${{ secrets.R2_BUCKET }}/config \
             --fast-list \
             --transfers=8 \
             --checkers=8 \
             --s3-upload-concurrency=8 \
             --progress \
+            --delete-during \
             -v
 
-      - name: Verify
+      - name: Verify uploaded files
         run: |
-          rclone ls r2:${{ secrets.R2_BUCKET }}
+          echo "Files in R2:"
+          rclone ls r2:${{ secrets.R2_BUCKET }}/config
