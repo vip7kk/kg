@@ -10,11 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Install rclone
         run: |
-          sudo -v
           curl https://rclone.org/install.sh | sudo bash
 
       - name: Create rclone config
@@ -27,24 +27,31 @@ jobs:
           provider = Cloudflare
 
           access_key_id = ${{ secrets.R2_ACCESS_KEY_ID }}
-
           secret_access_key = ${{ secrets.R2_SECRET_ACCESS_KEY }}
 
           endpoint = ${{ secrets.R2_ENDPOINT }}
 
-          acl = private
-
           no_check_bucket = true
+          acl = private
           EOF
 
       - name: Sync JSON
         run: |
-          rclone sync . \
-          r2:${{ secrets.R2_BUCKET }} \
-          --include "*.json" \
-          --progress \
-          --fast-list \
-          -v
+          rclone sync . r2:${{ secrets.R2_BUCKET }} \
+            --include "*.json" \
+            --exclude ".git/**" \
+            --exclude ".github/**" \
+            --exclude "*.md" \
+            --exclude "*.png" \
+            --exclude "*.jpg" \
+            --exclude "*.jpeg" \
+            --exclude "*.gif" \
+            --fast-list \
+            --transfers=8 \
+            --checkers=8 \
+            --s3-upload-concurrency=8 \
+            --progress \
+            -v
 
       - name: Verify
         run: |
