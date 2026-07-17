@@ -9,26 +9,43 @@ jobs:
   sync:
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: read
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Install Wrangler
-        run: npm install -g wrangler
-
-      - name: Upload JSON files
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          BUCKET: ${{ secrets.R2_BUCKET }}
+      - name: Install rclone
         run: |
-          find . -type f -name "*.json" | while read file; do
-            key="${file#./}"
-            echo "Uploading $key"
-            wrangler r2 object put "$BUCKET/$key" \
-              --file="$file" \
-              --content-type="application/json"
-          done
+          sudo -v
+          curl https://rclone.org/install.sh | sudo bash
+
+      - name: Create rclone config
+        run: |
+          mkdir -p ~/.config/rclone
+
+          cat > ~/.config/rclone/rclone.conf <<EOF
+          [r2]
+          type = s3
+          provider = Cloudflare
+
+          access_key_id = ${{ secrets.R2_ACCESS_KEY_ID }}
+
+          secret_access_key = ${{ secrets.R2_SECRET_ACCESS_KEY }}
+
+          endpoint = ${{ secrets.R2_ENDPOINT }}
+
+          acl = private
+
+          no_check_bucket = true
+          EOF
+
+      - name: Sync JSON
+        run: |
+          rclone sync . \
+          r2:${{ secrets.R2_BUCKET }} \
+          --include "*.json" \
+          --progress \
+          --fast-list \
+          -v
+
+      - name: Verify
+        run: |
+          rclone ls r2:${{ secrets.R2_BUCKET }}
