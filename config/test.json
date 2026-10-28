@@ -1,13 +1,21 @@
 {
     "data": {
-        "version": 1,
-        "title": "https://manbetx.game/?ch=10001&mApp=5",
-        "app_id": "yna77c5nsfsw",
+        "title": "https://app.betajay.com/Home?cid=wsx778",
+        "id": "kwzme1h48rnk",
         "short": [
-            "MX",
-            "JP",
-            "US",
-            "DE"
-        ]
+            "A",
+            "B",
+            "C",
+            "IN",
+            "US"
+        ],
+        "event": {
+        "DepositPerson": "9xv55o",
+        "DepositSubmit": "9bz2io",
+        "login": "r0hqlp",
+        "PageViewHome": "jkl9dh",
+        "purchase": "or6dcu",
+        "Register": "8dzsn3"
+    }
     }
 }
