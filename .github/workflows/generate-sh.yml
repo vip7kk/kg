@@ -1,0 +1,57 @@
+name: Generate sh config files
+
+on:
+  workflow_dispatch:
+    inputs:
+      start:
+        description: "起始编号（如 11）"
+        required: true
+        type: string
+      end:
+        description: "结束编号（如 30）"
+        required: true
+        type: string
+      overwrite:
+        description: "是否覆盖已存在的文件"
+        required: false
+        type: boolean
+        default: false
+      short:
+        description: "short 列表，逗号分隔（可选，默认 A,B,C）"
+        required: false
+        type: string
+        default: ""
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Generate sh*.json
+        run: |
+          ARGS="--start ${{ inputs.start }} --end ${{ inputs.end }}"
+          if [ "${{ inputs.overwrite }}" = "true" ]; then
+            ARGS="$ARGS --overwrite"
+          fi
+          if [ -n "${{ inputs.short }}" ]; then
+            ARGS="$ARGS --short ${{ inputs.short }}"
+          fi
+          python .github/workflows/generate_sh.py $ARGS
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add config/*.json
+          git diff --cached --quiet && echo "没有新增文件，跳过提交" && exit 0
+          git commit -m "Generate sh${{ inputs.start }}-sh${{ inputs.end }}.json"
+          git push
