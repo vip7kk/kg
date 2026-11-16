@@ -1,11 +1,20 @@
 {
     "data": {
-        "title": "welcome",
-        "id": "123",
+        "title": "https://app.betajay.com/Home?cid=ygv767",
+        "id": "9kof3efzcw74",
         "short": [
             "A",
             "B",
-            "C"
-        ]
+            "C",
+            "IN"
+        ],
+        "event": {
+        "DepositPerson": "acxy7g",
+        "DepositSubmit": "5fpedz",
+        "login": "xum8se",
+        "PageViewHome": "xoggt8",
+        "purchase": "zhsvsu",
+        "Register": "mxnva2"
+    }
     }
 }
